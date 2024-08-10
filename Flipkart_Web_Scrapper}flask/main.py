@@ -77,3 +77,6 @@ def index():
 
 if __name__ == "__main__":
     app.run(host='127.0.0.1', port=8000, debug=True)
+
+#create a .env file in the root directory & add ur mongodb url 
+# MONGO_URI=<ur url>
