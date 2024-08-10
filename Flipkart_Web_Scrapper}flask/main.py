@@ -1,3 +1,5 @@
+import os
+from dotenv import load_dotenv
 from flask import Flask, render_template, request, jsonify
 from flask_cors import CORS, cross_origin
 import requests
@@ -6,6 +8,8 @@ from urllib.request import urlopen
 import pymongo
 import certifi
 import ssl
+
+load_dotenv()
 
 app = Flask(__name__) # initializing a flask app
 CORS(app)
@@ -58,7 +62,8 @@ def index():
                 f.write(f"{review_data['Product']}, {review_data['Name']}, {review_data['Rating']}, {review_data['CommentHead']}, {review_data['Comment']}\n")
             f.close()
             if reviews:
-                client = pymongo.MongoClient("mongodb+srv://riq:riq22@riq.sqerohq.mongodb.net/?retryWrites=true&w=majority&appName=riq")
+                mongo_uri = os.getenv('MONGO_URI')
+                client = pymongo.MongoClient(mongo_uri)
                 db = client['review_scrap']
                 review_collection = db['review_scrap_data']
                 review_collection.insert_many(reviews)
